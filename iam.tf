@@ -37,8 +37,8 @@ resource "aws_iam_policy" "cloudfront_cloudwatch" {
             "Resource": [
                 "${aws_cloudwatch_log_group.cloudfront_cloudwatch.arn}:log-stream:*",
                 "${aws_cloudwatch_log_group.cloudfront_cloudwatch.arn}",
-                "${aws_s3_bucket.static_assets.arn}",
-                "${aws_s3_bucket.static_assets.arn}/*"
+                "${aws_s3_bucket.cloudfront_logs.arn}",
+                "${aws_s3_bucket.cloudfront_logs.arn}/*"
             ]
         }
     ]

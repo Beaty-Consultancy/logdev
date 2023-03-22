@@ -40,6 +40,7 @@ import os
 import subprocess
 import gzip
 import datetime
+import botocore
 from botocore.exceptions import ClientError
 
 
