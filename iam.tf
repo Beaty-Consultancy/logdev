@@ -32,7 +32,8 @@ resource "aws_iam_policy" "cloudfront_cloudwatch" {
                 "s3:GetObject",
                 "logs:CreateLogStream",
                 "s3:ListBucket",
-                "logs:PutLogEvents"
+                "logs:PutLogEvents",
+                "logs:DescribeLogStreams"
             ],
             "Resource": [
                 "${aws_cloudwatch_log_group.cloudfront_cloudwatch.arn}:log-stream:*",
