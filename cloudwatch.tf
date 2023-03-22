@@ -18,7 +18,7 @@ resource "aws_lambda_function" "cloudfront_cloudwatch" {
   ]
   function_name                  = "${var.project}-${var.environment}-cloudfront_cloudwatch"
   filename                       = data.archive_file.cloudfront_cloudwatch.output_path
-  handler                        = "lambda_handler"
+  handler                        = "cloudfront_cloudwatch.lambda_handler"
   layers                         = []
   memory_size                    = 512
   package_type                   = "Zip"
