@@ -56,3 +56,22 @@ resource "aws_lambda_alias" "cloudfront_cloudwatch" {
   function_name    = aws_lambda_function.cloudfront_cloudwatch.arn
   function_version = "$LATEST"
 }
+
+resource "aws_lambda_permission" "cloudfront_cloudwatch" {
+  statement_id  = "AllowExecutionFromS3Bucket"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.cloudfront_cloudwatch.arn
+  principal     = "s3.amazonaws.com"
+  source_arn    = aws_s3_bucket.cloudfront_logs.arn
+}
+
+resource "aws_s3_bucket_notification" "cloudfront_cloudwatch" {
+  bucket = aws_s3_bucket.cloudfront_logs.id
+
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.cloudfront_cloudwatch.arn
+    events              = ["s3:ObjectCreated:*"]
+  }
+
+  depends_on = [aws_lambda_permission.cloudfront_cloudwatch]
+}
