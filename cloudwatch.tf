@@ -9,7 +9,7 @@ resource "aws_cloudwatch_log_group" "cloudfront_cloudwatch" {
 data "archive_file" "cloudfront_cloudwatch" {
   type        = "zip"
   output_path = "cloudfront_cloudwatch.zip"
-  source_dir  = "cloudfront_cloudwatch.py"
+  source_file = "cloudfront_cloudwatch.py"
 }
 
 resource "aws_lambda_function" "cloudfront_cloudwatch" {
@@ -34,8 +34,8 @@ resource "aws_lambda_function" "cloudfront_cloudwatch" {
 
   environment {
     variables = {
-      "CloudWatch_LogFormat"    = "cloudfront"
-      "CloudWatch_LogGroup"     = aws_cloudwatch_log_group.cloudfront_cloudwatch.name
+      "CloudWatch_LogFormat" = "cloudfront"
+      "CloudWatch_LogGroup"  = aws_cloudwatch_log_group.cloudfront_cloudwatch.name
     }
   }
 
