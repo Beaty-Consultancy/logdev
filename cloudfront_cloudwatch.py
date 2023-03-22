@@ -44,7 +44,6 @@ import botocore
 from botocore.exceptions import ClientError
 
 
-
 def createLogGroupAndStream(loggroup, logstream):
     print("Working with CloudWatch Logs group " + loggroup + " and stream "+logstream)
     try:
@@ -54,6 +53,7 @@ def createLogGroupAndStream(loggroup, logstream):
     except ClientError as e:
         if e.response['Error']['Code'] != 'ResourceAlreadyExistsException':
             raise
+        return
     
     try:
         GLOBAL_CWL.create_log_stream(
@@ -63,6 +63,7 @@ def createLogGroupAndStream(loggroup, logstream):
     except ClientError as e:
         if e.response['Error']['Code'] != 'ResourceAlreadyExistsException':
             raise
+        return
 
     return True
 
@@ -119,12 +120,14 @@ def lambda_handler(event, context):
             print("The object does not exist.")
         else:
             raise
+        return
+    
     # Gunzip local file
     print(subprocess.check_output(['gunzip', '-f', localfile_gzipped])) #  gzip command create .gz file
     print("Unzipped file :")
     print(subprocess.check_output(['ls','-la', localfile_unzipped])) #  gzip command create .gz file
     print("Removing comment line")
-    print(subprocess.check_output(['sed', '-i', '/^#/ d', localfile_unzipped])) #  Remove line with comment ()
+    print(subprocess.check_output(['sed', '-i', '/^#/ d', localfile_unzipped])) #
     print("Sorting file")
     print(subprocess.check_output(['sort', '-k2,3', '-o', localfile_unzipped,  localfile_unzipped])) # Sort by date time
     
@@ -140,6 +143,7 @@ def lambda_handler(event, context):
     events = []
     f = open(localfile_unzipped, 'rt')
     i = 0
+    message = None  # initialize message variable
     for line in f:
         i = i + 1
         fields = line.strip().split("\t")

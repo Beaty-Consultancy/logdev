@@ -34,7 +34,7 @@ resource "aws_lambda_function" "cloudfront_cloudwatch" {
 
   environment {
     variables = {
-      "CloudWatch_LogFormat" = "cloudfront"
+      "CloudWatch_LogFormat" = "simplified"
       "CloudWatch_LogGroup"  = aws_cloudwatch_log_group.cloudfront_cloudwatch.name
     }
   }
